@@ -12,8 +12,10 @@
 
     <div class="d-flex gap-3 small">
 
-        <!-- FIXED: Load comment page, not comment_add -->
-        <a href="{% url 'comments_view' tweet.id %}?parent={{ comment.id }}" class="text-decoration-none">
+        <a 
+            href="{% url 'comments_view' tweet.id %}?parent={{ comment.id }}" 
+            class="text-decoration-none"
+        >
             Reply
         </a>
 
