@@ -19,9 +19,14 @@
         <img src="{{ tweet.photo.url }}" class="img-fluid rounded-3 mb-2">
     {% endif %}
 
-    <div class="text-muted small">
-        ❤️ {{ tweet.likes.count }}
-        • <a href="{% url 'comments_view' tweet.id %}">Comments</a>
+    <div class="text-muted small d-flex gap-3">
+        <a href="{% url 'tweet_like_toggle' tweet.id %}" class="text-decoration-none">
+            ❤️ {{ tweet.likes.count }}
+        </a>
+
+        <a href="{% url 'comments_view' tweet.id %}" class="text-decoration-none">
+            Comments
+        </a>
     </div>
 
 </div>
