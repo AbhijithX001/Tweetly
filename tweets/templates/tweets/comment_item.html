@@ -1,0 +1,35 @@
+<div class="comment-card p-3 mb-3 bg-white rounded-3 shadow-sm border-start border-3">
+
+    <div class="d-flex align-items-center mb-2">
+        <img src="{{ comment.user.profile.image.url }}" width="34" height="34" class="rounded-circle me-2">
+        <div>
+            <div class="fw-semibold small">{{ comment.user.username }}</div>
+            <div class="text-muted small">{{ comment.created_at }}</div>
+        </div>
+    </div>
+
+    <div class="mb-2">{{ comment.text }}</div>
+
+    <div class="d-flex gap-3 small">
+
+        <a href="{% url 'comments_view' tweet.id %}?reply={{ comment.id }}" class="text-decoration-none">
+            Reply
+        </a>
+
+        {% if comment.user == request.user %}
+            <a href="{% url 'comment_delete' comment.id %}" class="text-danger text-decoration-none">
+                Delete
+            </a>
+        {% endif %}
+
+    </div>
+
+    {% if comment.replies.all %}
+        <div class="ps-4 mt-3 border-start">
+            {% for reply in comment.replies.all %}
+                {% include 'tweets/comment_item.html' with comment=reply tweet=tweet %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+</div>
