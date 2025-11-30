@@ -16,6 +16,8 @@
 
 {% for comment in comments %}
     {% include "tweets/comment_item.html" with comment=comment tweet=tweet %}
+{% empty %}
+<p class="text-muted">No comments yet.</p>
 {% endfor %}
 
 <form method="POST" class="mt-4">

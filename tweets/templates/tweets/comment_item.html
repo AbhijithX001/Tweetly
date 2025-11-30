@@ -25,8 +25,9 @@
     {% if comment.replies.all %}
         <div class="ps-4 mt-3 border-start">
             {% for reply in comment.replies.all %}
-                {% include 'tweets/comment_item.html' with comment=reply tweet=tweet %}
+                {% include "tweets/comment_item.html" with comment=reply tweet=tweet %}
             {% endfor %}
         </div>
     {% endif %}
+
 </div>
