@@ -1,12 +1,15 @@
 from pathlib import Path
 import os
+import dj_database_url  # add this (make sure DJ Database URL is in requirements.txt)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-change-this-key'
+# Secret key and debug from environment
+SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-secret-key")
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-DEBUG = True
-ALLOWED_HOSTS = []
+# Allow all during deployment setup (you can restrict later)
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -48,11 +51,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'tweetly_project.wsgi.application'
 ASGI_APPLICATION = 'tweetly_project.asgi.application'
 
+# DATABASE — Railway PostgreSQL
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=False
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -64,14 +69,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
 USE_TZ = True
 
+# STATIC FILES
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# MEDIA FILES
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
