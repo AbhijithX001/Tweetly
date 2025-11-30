@@ -20,7 +20,7 @@
 <p class="text-muted">No comments yet.</p>
 {% endfor %}
 
-<form method="POST" action="{% url 'comment_add' tweet.id %}" class="mt-4">
+<form method="POST" action="{% url 'comment_add' tweet.id %}?parent={{ request.GET.parent }}" class="mt-4">
     {% csrf_token %}
     <textarea name="text" class="form-control mb-3" placeholder="Add a comment"></textarea>
     <button class="btn btn-secondary">Comment</button>
