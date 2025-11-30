@@ -2,6 +2,7 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
+
 {% if request.user.username == profile_user.username %}
 <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-outline-primary mb-3">
     Edit Profile
@@ -11,10 +12,10 @@
 <div class="profile-banner rounded-4 mb-3"></div>
 
 <div class="d-flex align-items-center mb-3">
-    <img src="{{ user.profile.profile_pic.url }}" class="rounded-circle me-3" width="80" height="80">
+    <img src="{{ profile_user.profile.image.url }}" class="rounded-circle me-3" width="80" height="80">
     <div>
-        <div class="fw-bold fs-5">{{ user.username }}</div>
-        <div class="text-muted small">{{ user.profile.bio }}</div>
+        <div class="fw-bold fs-5">{{ profile_user.username }}</div>
+        <div class="text-muted small">{{ profile_user.profile.bio }}</div>
     </div>
 </div>
 
@@ -24,8 +25,8 @@
     <div class="tweet-card p-3 mb-3 bg-white rounded-4 shadow-sm">
         <p class="mb-2">{{ tweet.text }}</p>
 
-        {% if tweet.image %}
-            <img src="{{ tweet.image.url }}" class="img-fluid rounded-3 mb-2">
+        {% if tweet.photo %}
+            <img src="{{ tweet.photo.url }}" class="img-fluid rounded-3 mb-2">
         {% endif %}
 
         <div class="text-muted small">❤️ {{ tweet.likes.count }}</div>
