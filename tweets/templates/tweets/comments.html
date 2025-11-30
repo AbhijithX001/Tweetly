@@ -15,15 +15,20 @@
 
 <h5 class="mt-4">Comments</h5>
 
-{# If replying, show reply target #}
 {% if request.GET.parent %}
     {% with parent_comment=request.GET.parent|get_comment %}
-        {% if parent_comment %}
-            <div class="alert alert-info p-2">
-                Replying to <strong>{{ parent_comment.user.username }}</strong>:  
-                "{{ parent_comment.text }}"
-            </div>
-        {% endif %}
+    {% if parent_comment %}
+        <div class="p-3 rounded-3 mb-3" style="background:#d7f3ff;">
+            Replying to <strong>{{ parent_comment.user.username }}</strong>:
+            "<em>{{ parent_comment.text }}</em>"
+        </div>
+
+        <form method="POST" action="{% url 'comment_add' tweet.id %}?parent={{ parent_comment.id }}" class="mb-4">
+            {% csrf_token %}
+            <textarea name="text" class="form-control mb-2" placeholder="Write your reply..." required></textarea>
+            <button class="btn btn-primary btn-sm">Reply</button>
+        </form>
+    {% endif %}
     {% endwith %}
 {% endif %}
 
@@ -33,10 +38,12 @@
 <p class="text-muted">No comments yet.</p>
 {% endfor %}
 
-<form method="POST" action="{% url 'comment_add' tweet.id %}?parent={{ request.GET.parent }}">
+{% if not request.GET.parent %}
+<form method="POST" action="{% url 'comment_add' tweet.id %}">
     {% csrf_token %}
     <textarea name="text" class="form-control mb-3" placeholder="Add a comment"></textarea>
     <button class="btn btn-secondary">Comment</button>
 </form>
+{% endif %}
 
 {% endblock %}
