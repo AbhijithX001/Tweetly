@@ -4,9 +4,7 @@
 {% block content %}
 
 {% if request.user.username == profile_user.username %}
-<a href="{% url 'edit_profile' %}" class="btn btn-sm btn-outline-primary mb-3">
-    Edit Profile
-</a>
+<a href="{% url 'edit_profile' %}" class="btn btn-sm btn-outline-primary mb-3">Edit Profile</a>
 {% endif %}
 
 <div class="profile-banner rounded-4 mb-3"></div>
@@ -22,15 +20,15 @@
 <h5 class="mb-3">Tweets</h5>
 
 {% for tweet in tweets %}
-    <div class="tweet-card p-3 mb-3 bg-white rounded-4 shadow-sm">
-        <p class="mb-2">{{ tweet.text }}</p>
+<div class="tweet-card p-3 mb-3 bg-white rounded-4 shadow-sm">
+    <p class="mb-2">{{ tweet.text }}</p>
 
-        {% if tweet.photo %}
-            <img src="{{ tweet.photo.url }}" class="img-fluid rounded-3 mb-2">
-        {% endif %}
+    {% if tweet.photo %}
+        <img src="{{ tweet.photo.url }}" class="img-fluid rounded-3 mb-2">
+    {% endif %}
 
-        <div class="text-muted small">❤️ {{ tweet.likes.count }}</div>
-    </div>
+    <div class="text-muted small">❤️ {{ tweet.likes.count }}</div>
+</div>
 {% endfor %}
 
 {% endblock %}
