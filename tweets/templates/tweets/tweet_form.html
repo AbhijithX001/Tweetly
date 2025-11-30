@@ -2,29 +2,23 @@
 {% block title %}Tweet{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">{{ tweet|default_if_none:"Create Tweet" }}</h2>
 
-<div class="p-4 bg-white rounded-4 shadow-sm" style="max-width: 600px; margin: auto;">
+<h4 class="mb-3">Create / Edit Tweet</h4>
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <textarea name="text" class="form-control mb-3" placeholder="What's happening?">
+        {% if tweet %}{{ tweet.text }}{% endif %}
+    </textarea>
 
-        <textarea name="text" class="form-control mb-3" rows="4" placeholder="What's happening?" required>
-{{ tweet.text|default_if_none:"" }}
-        </textarea>
+    <input type="file" name="photo" class="form-control mb-3">
 
-        {% if tweet.photo %}
-            <div class="mb-3">
-                <img src="{{ tweet.photo.url }}" class="img-fluid rounded-3">
-            </div>
-        {% endif %}
+    {% if tweet and tweet.photo %}
+        <img src="{{ tweet.photo.url }}" class="img-fluid rounded mb-3">
+    {% endif %}
 
-        <input type="file" name="photo" class="form-control mb-3">
+    <button class="btn btn-primary">Post</button>
+</form>
 
-        <button class="btn btn-primary">{{ tweet|yesno:"Update,Post" }}</button>
-
-        <a href="{% url 'tweet_list' %}" class="btn btn-secondary ms-2">Cancel</a>
-    </form>
-
-</div>
 {% endblock %}

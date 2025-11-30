@@ -1,47 +1,27 @@
-{% extends "layout.html" %}
-{% block title %}Tweetly{% endblock %}
+{% extends 'layout.html' %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
+
+<h4 class="mb-4">Tweets</h4>
 
 {% for tweet in tweets %}
 <div class="tweet-card p-3 mb-3 bg-white rounded-4 shadow-sm">
 
     <div class="d-flex align-items-center mb-2">
-        <img src="{{ tweet.user.profile.image.url }}" width="42" height="42" class="rounded-circle me-2">
-        <div>
-            <div class="fw-semibold">{{ tweet.user.username }}</div>
-            <div class="text-muted small">{{ tweet.created_at }}</div>
-        </div>
-
-        {% if request.user == tweet.user %}
-        <div class="ms-auto d-flex gap-2">
-            <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-sm btn-outline-secondary">
-                Edit
-            </a>
-
-            <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-sm btn-outline-danger">
-                Delete
-            </a>
-        </div>
-        {% endif %}
+        <img src="{{ tweet.user.profile.image.url }}" width="40" height="40" class="rounded-circle me-2">
+        <strong>{{ tweet.user.username }}</strong>
     </div>
 
-    <div onclick="location.href='{% url 'comments_view' tweet.id %}'" style="cursor: pointer;">
-        <p class="mb-2">{{ tweet.text }}</p>
+    <p>{{ tweet.text }}</p>
 
-        {% if tweet.photo %}
-            <img src="{{ tweet.photo.url }}" class="img-fluid rounded-3 tweet-image mb-2">
-        {% endif %}
-    </div>
+    {% if tweet.photo %}
+        <img src="{{ tweet.photo.url }}" class="img-fluid rounded-3 mb-2">
+    {% endif %}
 
-    <div class="d-flex justify-content-between align-items-center mt-2">
-        <a href="{% url 'comments_view' tweet.id %}" class="btn btn-sm btn-light border">
-            💬 {{ tweet.comments.count }}
-        </a>
-
-        <a href="{% url 'tweet_like_toggle' tweet.id %}" class="btn btn-sm btn-outline-danger">
-            ❤️ {{ tweet.likes.count }}
-        </a>
+    <div class="text-muted small">
+        ❤️ {{ tweet.likes.count }}
+        • <a href="{% url 'comments_view' tweet.id %}">Comments</a>
     </div>
 
 </div>
