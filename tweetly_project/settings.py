@@ -9,13 +9,13 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "dummy-secret-key")
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "tweety-production.up.railway.app",
+    "tweetly-production.up.railway.app",
     "localhost",
     "127.0.0.1",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://tweety-production.up.railway.app"
+    "https://tweetly-production.up.railway.app"
 ]
 
 INSTALLED_APPS = [
@@ -75,7 +75,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
 USE_TZ = True
 
