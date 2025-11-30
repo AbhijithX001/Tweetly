@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% load comment_filters %}
 {% block title %}Comments{% endblock %}
 
 {% block content %}
@@ -14,17 +15,25 @@
 
 <h5 class="mt-4">Comments</h5>
 
+{# If replying, show reply target #}
+{% if request.GET.parent %}
+    {% with parent_comment=request.GET.parent|get_comment %}
+        {% if parent_comment %}
+            <div class="alert alert-info p-2">
+                Replying to <strong>{{ parent_comment.user.username }}</strong>:  
+                "{{ parent_comment.text }}"
+            </div>
+        {% endif %}
+    {% endwith %}
+{% endif %}
+
 {% for comment in comments %}
     {% include "tweets/comment_item.html" with comment=comment tweet=tweet %}
 {% empty %}
 <p class="text-muted">No comments yet.</p>
 {% endfor %}
 
-<form 
-    method="POST" 
-    class="mt-4"
-    action="{% url 'comment_add' tweet.id %}?parent={{ request.GET.parent }}"
->
+<form method="POST" action="{% url 'comment_add' tweet.id %}?parent={{ request.GET.parent }}">
     {% csrf_token %}
     <textarea name="text" class="form-control mb-3" placeholder="Add a comment"></textarea>
     <button class="btn btn-secondary">Comment</button>
