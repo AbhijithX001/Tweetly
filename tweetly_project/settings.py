@@ -1,25 +1,27 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-load_dotenv()
 import dj_database_url
+
+load_dotenv()  # Load .env variables
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECURITY
 SECRET_KEY = os.environ.get("SECRET_KEY", "dummy-secret-key")
-
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = [
     "tweetly-production.up.railway.app",
-    "localhost",
     "127.0.0.1",
+    "localhost",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://tweetly-production.up.railway.app"
 ]
 
+# APPS
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -27,11 +29,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # Cloudinary
     "cloudinary",
     "cloudinary_storage",
+
+    # App
     "tweets",
 ]
 
+# MIDDLEWARE
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -62,6 +69,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "tweetly_project.wsgi.application"
 
+# DATABASE
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if DATABASE_URL:
@@ -69,7 +77,7 @@ if DATABASE_URL:
         "default": dj_database_url.parse(
             DATABASE_URL,
             conn_max_age=600,
-            ssl_require=True,
+            ssl_require=True
         )
     }
 else:
@@ -80,6 +88,7 @@ else:
         }
     }
 
+# PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -92,23 +101,31 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
+# STATIC FILES
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# MEDIA (Cloudinary)
 MEDIA_URL = "/media/"
 
+# CLOUDINARY CONFIG (SAFE — uses .env)
+CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
+
 CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": "dzyot7mu6",
-    "API_KEY": "541974213731761",
-    "API_SECRET": "HRDAv6GgS5P3TqBcvN3_iybFT2M",
+    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
 }
 
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
+# Keep static files local
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# LOGIN
 LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/tweets/"
 LOGOUT_REDIRECT_URL = "/tweets/"
