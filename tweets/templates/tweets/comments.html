@@ -41,7 +41,7 @@
 {% if not request.GET.parent %}
 <form method="POST" action="{% url 'comment_add' tweet.id %}">
     {% csrf_token %}
-    <textarea name="text" class="form-control mb-3" placeholder="Add a comment"></textarea>
+    <textarea name="text" class="form-control mb-3" placeholder="Add a comment" required></textarea>
     <button class="btn btn-secondary">Comment</button>
 </form>
 {% endif %}

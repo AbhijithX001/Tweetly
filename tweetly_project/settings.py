@@ -1,14 +1,14 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+load_dotenv()
 import dj_database_url
-import cloudinary
-import cloudinary_storage
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "dummy-secret-key")
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "tweetly-production.up.railway.app",
@@ -62,13 +62,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "tweetly_project.wsgi.application"
 
-DATABASES = {
-    "default": dj_database_url.parse(
-        os.environ.get("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True,
-    )
-}
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True,
+        )
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -83,14 +93,19 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
-STATICFILES_STORAGE = "cloudinary_storage.storage.StaticHashedCloudinaryStorage"
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 MEDIA_URL = "/media/"
 
-CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": "dzyot7mu6",
+    "API_KEY": "541974213731761",
+    "API_SECRET": "HRDAv6GgS5P3TqBcvN3_iybFT2M",
+}
+
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

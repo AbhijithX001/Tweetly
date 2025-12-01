@@ -11,11 +11,7 @@
     <div class="mb-2">{{ comment.text }}</div>
 
     <div class="d-flex gap-3 small">
-
-        <a 
-            href="{% url 'comments_view' tweet.id %}?parent={{ comment.id }}" 
-            class="text-decoration-none"
-        >
+        <a href="{% url 'comments_view' tweet.id %}?parent={{ comment.id }}" class="text-decoration-none">
             Reply
         </a>
 
@@ -26,7 +22,7 @@
         {% endif %}
     </div>
 
-    {% if comment.replies.all %}
+    {% if comment.replies.all.count %}
         <div class="ps-4 mt-3 border-start">
             {% for reply in comment.replies.all %}
                 {% include "tweets/comment_item.html" with comment=reply tweet=tweet %}
