@@ -3,11 +3,10 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 
-load_dotenv()  # Load .env variables
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY
 SECRET_KEY = os.environ.get("SECRET_KEY", "dummy-secret-key")
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
@@ -21,7 +20,6 @@ CSRF_TRUSTED_ORIGINS = [
     "https://tweetly-production.up.railway.app"
 ]
 
-# APPS
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -30,15 +28,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    # Cloudinary
     "cloudinary",
     "cloudinary_storage",
 
-    # App
     "tweets",
 ]
 
-# MIDDLEWARE
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -88,7 +83,7 @@ else:
         }
     }
 
-# PASSWORD VALIDATION
+# PASSWORD VALIDATORS
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -106,26 +101,19 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# MEDIA (Cloudinary)
+# MEDIA — Cloudinary
 MEDIA_URL = "/media/"
 
-# CLOUDINARY CONFIG (SAFE — uses .env)
+# Use ONLY Cloudinary URL — no manual keys
 CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
-
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
-    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
-    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
-}
 
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
-# Keep static files local
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# LOGIN
+# LOGIN ROUTES
 LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/tweets/"
 LOGOUT_REDIRECT_URL = "/tweets/"
