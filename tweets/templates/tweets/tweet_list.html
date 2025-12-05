@@ -30,6 +30,16 @@
             💬 Comments
         </a>
 
+        {% if request.user == tweet.user %}
+            <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-warning">
+                ✏️ Edit
+            </a>
+
+            <a href="{% url 'tweet_confirm_delete' tweet.id %}" class="btn btn-danger">
+                🗑 Delete
+            </a>
+        {% endif %}
+
     </div>
 
 </div>
