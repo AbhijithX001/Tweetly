@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% load comment_filters %}
+{% block title %}Comments{% endblock %}
+
+{% block content %}
+
+<div class="tweet-card p-3 mb-3 bg-white rounded-4 shadow-sm">
+    <strong>{{ tweet.user.username }}</strong>
+    <p>{{ tweet.text }}</p>
+
+    {% if tweet.photo %}
+        <img src="{{ tweet.photo.url }}" class="img-fluid rounded-3 mb-2">
+    {% endif %}
+</div>
+
+<h5 class="mt-4">Comments</h5>
+
+{% if request.GET.parent %}
+    {% with parent_comment=request.GET.parent|get_comment %}
+    {% if parent_comment %}
+        <div class="p-3 rounded-3 mb-3" style="background:#d7f3ff;">
+            Replying to <strong>{{ parent_comment.user.username }}</strong>:
+            "<em>{{ parent_comment.text }}</em>"
+        </div>
+
+        <form method="POST" action="{% url 'comment_add' tweet.id %}?parent={{ parent_comment.id }}" class="mb-4">
+            {% csrf_token %}
+            <textarea name="text" class="form-control mb-2" placeholder="Write your reply..." required></textarea>
+            <button class="btn btn-primary btn-sm">Reply</button>
+        </form>
+    {% endif %}
+    {% endwith %}
+{% endif %}
+
+{% for comment in comments %}
+    {% include "tweets/comment_item.html" with comment=comment tweet=tweet %}
+{% empty %}
+<p class="text-muted">No comments yet.</p>
+{% endfor %}
+
+{% if not request.GET.parent %}
+<form method="POST" action="{% url 'comment_add' tweet.id %}">
+    {% csrf_token %}
+    <textarea name="text" class="form-control mb-3" placeholder="Add a comment" required></textarea>
+    <button class="btn btn-secondary">Comment</button>
+</form>
+{% endif %}
+
+{% endblock %}

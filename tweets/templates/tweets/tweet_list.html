@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<h4 class="mb-4">Tweets</h4>
+
+{% for tweet in tweets %}
+
+<div class="tweet-card mb-3" data-href="{% url 'comments_view' tweet.id %}">
+
+    <div class="d-flex align-items-center mb-2">
+        <img src="{{ tweet.user.profile.image.url }}" width="40" height="40" class="rounded-circle me-2">
+        <strong>{{ tweet.user.username }}</strong>
+    </div>
+
+    <p>{{ tweet.text }}</p>
+
+    {% if tweet.photo %}
+        <img src="{{ tweet.photo.url }}" class="tweet-image mb-2">
+    {% endif %}
+
+    <div class="d-flex gap-2 mt-2">
+
+        <a href="{% url 'tweet_like_toggle' tweet.id %}" class="btn btn-like like-btn">
+            ❤️ {{ tweet.likes.count }}
+        </a>
+
+        <a href="{% url 'comments_view' tweet.id %}" class="btn btn-comment comment-btn">
+            💬 Comments
+        </a>
+
+    </div>
+
+</div>
+
+{% empty %}
+<p class="text-muted">No tweets yet.</p>
+{% endfor %}
+
+<script>
+document.querySelectorAll('.tweet-card').forEach(function(card){
+    card.addEventListener('click', function(e){
+        if (e.target.closest('.btn')) return;
+        const href = card.dataset.href;
+        if (href) window.location.href = href;
+    });
+});
+</script>
+
+{% endblock %}
