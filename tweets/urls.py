@@ -5,7 +5,7 @@ urlpatterns = [
     path('', views.tweet_list, name='tweet_list'),
     path('create/', views.tweet_create, name='tweet_create'),
     path('<int:tweet_id>/edit/', views.tweet_edit, name='tweet_edit'),
-    path('<int:tweet_id>/delete/', views.tweet_confirm_delete, name='tweet_delete'),
+    path('<int:tweet_id>/delete/', views.tweet_confirm_delete, name='tweet_confirm_delete'),
     path('<int:tweet_id>/like/', views.tweet_like_toggle, name='tweet_like_toggle'),
 
     path('register/', views.register, name='register'),

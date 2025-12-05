@@ -3,13 +3,13 @@
 
 {% block content %}
 
-<h4 class="mb-3">Create / Edit Tweet</h4>
+<h4 class="mb-3">{% if tweet %}Edit Tweet{% else %}Create Tweet{% endif %}</h4>
 
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    
-    <textarea name="text" class="form-control mb-3" placeholder="What's happening?">
-        {% if tweet %}{{ tweet.text }}{% endif %}
+
+    <textarea name="text" class="form-control mb-3" placeholder="What's happening?" required>
+{% if tweet %}{{ tweet.text }}{% endif %}
     </textarea>
 
     <input type="file" name="photo" class="form-control mb-3">
@@ -18,7 +18,9 @@
         <img src="{{ tweet.photo.url }}" class="img-fluid rounded mb-3">
     {% endif %}
 
-    <button class="btn btn-primary">Post</button>
+    <button class="btn btn-primary">
+        {% if tweet %}Update{% else %}Post{% endif %}
+    </button>
 </form>
 
 {% endblock %}

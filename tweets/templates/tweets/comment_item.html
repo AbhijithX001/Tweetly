@@ -15,14 +15,14 @@
             Reply
         </a>
 
-        {% if comment.user == request.user %}
+        {% if request.user == comment.user %}
             <a href="{% url 'comment_delete' comment.id %}" class="text-danger text-decoration-none">
                 Delete
             </a>
         {% endif %}
     </div>
 
-    {% if comment.replies.all.count %}
+    {% if comment.replies.exists %}
         <div class="ps-4 mt-3 border-start">
             {% for reply in comment.replies.all %}
                 {% include "tweets/comment_item.html" with comment=reply tweet=tweet %}

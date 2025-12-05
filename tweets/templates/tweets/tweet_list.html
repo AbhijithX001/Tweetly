@@ -22,11 +22,11 @@
 
     <div class="d-flex gap-2 mt-2">
 
-        <a href="{% url 'tweet_like_toggle' tweet.id %}" class="btn btn-like like-btn">
+        <a href="{% url 'tweet_like_toggle' tweet.id %}" class="btn btn-like">
             ❤️ {{ tweet.likes.count }}
         </a>
 
-        <a href="{% url 'comments_view' tweet.id %}" class="btn btn-comment comment-btn">
+        <a href="{% url 'comments_view' tweet.id %}" class="btn btn-comment">
             💬 Comments
         </a>
 
