@@ -7,12 +7,11 @@
 
 {% for tweet in tweets %}
 
-<div class="tweet-card mb-3 p-3 bg-white rounded-4 shadow-sm">
+<div class="tweet-card mb-3">
 
     <div class="d-flex align-items-center mb-2">
         <a href="{% url 'user_profile' tweet.user.username %}">
-            <img src="{{ tweet.user.profile.image.url }}" 
-                 width="40" height="40" class="rounded-circle me-2">
+            <img src="{{ tweet.user.profile.image.url }}" width="40" height="40" class="rounded-circle me-2">
         </a>
         <strong>{{ tweet.user.username }}</strong>
     </div>
@@ -20,31 +19,22 @@
     <p>{{ tweet.text }}</p>
 
     {% if tweet.photo %}
-        <img src="{{ tweet.photo.url }}" class="tweet-image mb-2 img-fluid rounded-3">
+        <img src="{{ tweet.photo.url }}" class="tweet-image mb-2">
     {% endif %}
 
     <div class="d-flex gap-2 mt-2">
 
-        <a href="{% url 'tweet_like_toggle' tweet.id %}" 
-           class="btn btn-like like-btn">
+        <a href="{% url 'tweet_like_toggle' tweet.id %}" class="btn btn-like like-btn">
             ❤️ {{ tweet.likes.count }}
         </a>
 
-        <a href="{% url 'comments_view' tweet.id %}" 
-           class="btn btn-comment comment-btn">
-            💬 {{ tweet.comments.filter(parent=None).count }} Comments
+        <a href="{% url 'comments_view' tweet.id %}" class="btn btn-comment comment-btn">
+            💬 {{ tweet.main_comment_count }} Comments
         </a>
 
-        {% if tweet.user == request.user %}
-            <a href="{% url 'tweet_edit' tweet.id %}" 
-               class="btn btn-sm btn-outline-secondary">
-                Edit
-            </a>
-
-            <a href="{% url 'tweet_delete' tweet.id %}" 
-               class="btn btn-sm btn-outline-danger">
-                Delete
-            </a>
+        {% if request.user == tweet.user %}
+            <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+            <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
         {% endif %}
 
     </div>
