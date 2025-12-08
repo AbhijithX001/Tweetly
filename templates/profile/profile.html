@@ -4,7 +4,9 @@
 {% block content %}
 
 {% if request.user.username == profile_user.username %}
-<a href="{% url 'edit_profile' %}" class="btn btn-sm btn-outline-primary mb-3">Edit Profile</a>
+<a href="{% url 'edit_profile' %}" class="btn btn-sm btn-outline-primary mb-3">
+    Edit Profile
+</a>
 {% endif %}
 
 <div class="profile-banner rounded-4 mb-3"></div>
@@ -20,7 +22,9 @@
 <h5 class="mb-3">Tweets</h5>
 
 {% for tweet in tweets %}
-<div class="tweet-card p-3 mb-3 bg-white rounded-4 shadow-sm">
+<div class="tweet-card p-3 mb-3 bg-white rounded-4 shadow-sm"
+     data-href="{% url 'comments_view' tweet.id %}"
+     style="cursor: pointer;">
 
     <p class="mb-2">{{ tweet.text }}</p>
 
@@ -36,5 +40,17 @@
 {% empty %}
 <p class="text-muted">No tweets yet.</p>
 {% endfor %}
+
+<script>
+document.querySelectorAll('.tweet-card').forEach(function(card){
+    card.addEventListener('click', function(e){
+        // Prevent interfering with buttons or links
+        if (e.target.closest('a') || e.target.closest('button')) return;
+
+        const href = card.dataset.href;
+        if (href) window.location.href = href;
+    });
+});
+</script>
 
 {% endblock %}
