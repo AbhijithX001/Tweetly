@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from django.contrib import messages
 from .models import Tweet, Comment, Profile
+
 
 def tweet_list(request):
     tweets = Tweet.objects.all().order_by("-created_at")
@@ -14,6 +16,13 @@ def tweet_create(request):
     if request.method == "POST":
         text = request.POST.get("text")
         photo = request.FILES.get("photo")
+
+        if photo:
+            allowed_types = ["image/jpeg", "image/png"]
+            if photo.content_type not in allowed_types:
+                messages.error(request, "Only JPG or PNG images are allowed.")
+                return redirect("tweet_create")
+
         Tweet.objects.create(user=request.user, text=text, photo=photo)
         return redirect("tweet_list")
 
@@ -26,8 +35,16 @@ def tweet_edit(request, tweet_id):
 
     if request.method == "POST":
         tweet.text = request.POST.get("text")
-        if request.FILES.get("photo"):
-            tweet.photo = request.FILES.get("photo")
+        new_photo = request.FILES.get("photo")
+
+        if new_photo:
+            allowed_types = ["image/jpeg", "image/png"]
+            if new_photo.content_type not in allowed_types:
+                messages.error(request, "Only JPG or PNG images are allowed.")
+                return redirect("tweet_edit", tweet_id=tweet_id)
+
+            tweet.photo = new_photo
+
         tweet.save()
         return redirect("tweet_list")
 
@@ -121,8 +138,15 @@ def edit_profile(request):
 
     if request.method == "POST":
         profile.bio = request.POST.get("bio")
-        if request.FILES.get("image"):
-            profile.image = request.FILES.get("image")
+        new_image = request.FILES.get("image")
+
+        if new_image:
+            allowed_types = ["image/jpeg", "image/png"]
+            if new_image.content_type not in allowed_types:
+                messages.error(request, "Only JPG or PNG profile images are allowed.")
+                return redirect("edit_profile")
+
+            profile.image = new_image
 
         profile.save()
         return redirect("user_profile", username=request.user.username)
