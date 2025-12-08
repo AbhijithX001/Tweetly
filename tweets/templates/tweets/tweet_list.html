@@ -10,8 +10,13 @@
 <div class="tweet-card mb-3" data-href="{% url 'comments_view' tweet.id %}">
 
     <div class="d-flex align-items-center mb-2">
-        <img src="{{ tweet.user.profile.image.url }}" width="40" height="40" class="rounded-circle me-2">
-        <strong>{{ tweet.user.username }}</strong>
+        <a href="{% url 'user_profile' tweet.user.username %}">
+            <img src="{{ tweet.user.profile.image.url }}" width="40" height="40" class="rounded-circle me-2">
+        </a>
+
+        <a href="{% url 'user_profile' tweet.user.username %}" class="fw-bold text-dark text-decoration-none">
+            {{ tweet.user.username }}
+        </a>
     </div>
 
     <p>{{ tweet.text }}</p>
@@ -22,23 +27,13 @@
 
     <div class="d-flex gap-2 mt-2">
 
-        <a href="{% url 'tweet_like_toggle' tweet.id %}" class="btn btn-like">
+        <a href="{% url 'tweet_like_toggle' tweet.id %}" class="btn btn-like like-btn">
             ❤️ {{ tweet.likes.count }}
         </a>
 
-        <a href="{% url 'comments_view' tweet.id %}" class="btn btn-comment">
+        <a href="{% url 'comments_view' tweet.id %}" class="btn btn-comment comment-btn">
             💬 Comments
         </a>
-
-        {% if request.user == tweet.user %}
-            <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-warning">
-                Edit
-            </a>
-
-            <a href="{% url 'tweet_confirm_delete' tweet.id %}" class="btn btn-danger">
-                Delete
-            </a>
-        {% endif %}
 
     </div>
 
@@ -51,7 +46,7 @@
 <script>
 document.querySelectorAll('.tweet-card').forEach(function(card){
     card.addEventListener('click', function(e){
-        if (e.target.closest('.btn')) return;
+        if (e.target.closest('.btn') || e.target.closest('a')) return;
         const href = card.dataset.href;
         if (href) window.location.href = href;
     });
