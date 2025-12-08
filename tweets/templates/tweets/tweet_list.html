@@ -7,7 +7,7 @@
 
 {% for tweet in tweets %}
 
-<div class="tweet-card mb-3">
+<div class="tweet-card mb-3" data-href="{% url 'comments_view' tweet.id %}" style="cursor: pointer;">
 
     <div class="d-flex align-items-center mb-2">
         <a href="{% url 'user_profile' tweet.user.username %}">
@@ -44,5 +44,14 @@
 {% empty %}
 <p class="text-muted">No tweets yet.</p>
 {% endfor %}
+
+<script>
+document.querySelectorAll('.tweet-card').forEach(card => {
+    card.addEventListener('click', function(e){
+        if (e.target.closest('.btn')) return;
+        window.location.href = this.dataset.href;
+    });
+});
+</script>
 
 {% endblock %}
