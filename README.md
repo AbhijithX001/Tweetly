@@ -2,16 +2,16 @@
 
 A Django-based social networking application where users can share posts, upload images, interact through likes and comments, and manage personalized profiles.
 
-![Django](https://img.shields.io/badge/Django-5.x-green)
+![Django](https://img.shields.io/badge/Django-5.2-green)
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supabase-blue)
 ![Cloudinary](https://img.shields.io/badge/Cloudinary-Media-orange)
 
 ---
 
 ## About
 
-Tweetly is a Twitter-inspired social media platform that demonstrates core social networking features. Users can create accounts, publish posts with text and images, engage through likes and comments, and customize their profiles. The application is deployed on Railway using PostgreSQL and Cloudinary for media storage.
+Tweetly is a Twitter-inspired social media platform that demonstrates core social networking features. Users can create accounts, publish posts with text and images, engage through likes and comments, and customize their profiles. The application is deployed on Render using Supabase PostgreSQL and Cloudinary for media storage.
 
 ---
 
@@ -33,7 +33,7 @@ Tweetly is a Twitter-inspired social media platform that demonstrates core socia
 - Threaded discussion system
 
 **User Interface**
-- Responsive design using Django templates
+- Responsive design using Bootstrap 5
 - Home feed displaying recent tweets
 - Individual profile and tweet detail pages
 
@@ -42,20 +42,22 @@ Tweetly is a Twitter-inspired social media platform that demonstrates core socia
 ## Tech Stack
 
 **Backend**
-- Django 5.x with Python 3.x
-- PostgreSQL (Production) / SQLite (Development)
+- Django 5.2 with Python 3.x
+- PostgreSQL (Supabase) for production
+- SQLite for local development
 - Django ORM for database operations
 
 **Media Storage**
 - Cloudinary for image hosting
 
 **Deployment**
-- Railway platform
+- Render platform
 - Gunicorn WSGI server
 - WhiteNoise for static files
 
 **Frontend**
-- Django Templates with HTML5 and CSS3
+- Django Templates with Bootstrap 5
+- Custom CSS
 
 ---
 
@@ -66,6 +68,7 @@ Tweetly is a Twitter-inspired social media platform that demonstrates core socia
 - pip package manager
 - Git
 - Cloudinary account
+- Supabase account (for production)
 
 ### Setup Steps
 
@@ -90,12 +93,9 @@ pip install -r requirements.txt
 
 Create a `.env` file:
 ```env
-SECRET_KEY=your_django_secret_key
+DJANGO_SECRET_KEY=your_django_secret_key
 DEBUG=True
-DATABASE_URL=sqlite:///db.sqlite3
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
+CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
 ```
 
 **Run migrations and create superuser**
@@ -118,7 +118,7 @@ Visit `http://127.0.0.1:8000/`
 ### Cloudinary Setup
 1. Sign up at [Cloudinary](https://cloudinary.com/)
 2. Get credentials from Dashboard
-3. Add to `.env` file
+3. Add `CLOUDINARY_URL` to `.env` file
 
 ### Database Configuration
 
@@ -126,29 +126,10 @@ Visit `http://127.0.0.1:8000/`
 Uses SQLite by default
 
 **Production:**
-Configure PostgreSQL connection string in `DATABASE_URL` environment variable
-
----
-
-## How It Works
-
-### Tweet Creation Flow
-1. User logs in and accesses home page
-2. User writes text and optionally selects an image
-3. Form sends data to Django backend
-4. Django validates authentication and saves tweet
-5. Image uploads to Cloudinary, URL stored in database
-6. Tweet appears in feed immediately
-
-### Like System
-- Many-to-Many relationship between Users and Tweets
-- Toggle functionality: add or remove like on click
-- Real-time count updates
-
-### Comment System
-- Comments belong to tweets via foreign key
-- Replies use self-referential foreign key (parent comment)
-- Templates render threaded discussions
+Configure PostgreSQL connection string in `DATABASE_URL` environment variable:
+```env
+DATABASE_URL=postgresql://user:password@host:port/database
+```
 
 ---
 
@@ -174,7 +155,7 @@ Configure PostgreSQL connection string in `DATABASE_URL` environment variable
 
 ## Deployment
 
-### Railway Deployment
+### Render Deployment
 
 **Prepare for production**
 ```bash
@@ -184,21 +165,25 @@ pip freeze > requirements.txt
 
 **Create Procfile**
 ```
-web: gunicorn tweetly.wsgi --log-file -
+web: gunicorn tweetly_project.wsgi:application
 ```
 
 **Configure production settings**
 - Set `DEBUG=False`
-- Configure `ALLOWED_HOSTS`
-- Set up PostgreSQL database URL
+- Configure `ALLOWED_HOSTS` to include `.onrender.com`
+- Set up Supabase PostgreSQL database URL
 - Add Cloudinary credentials as environment variables
 
 **Deploy**
-1. Push code to GitHub
-2. Connect repository to Railway
-3. Add PostgreSQL database service
-4. Set environment variables in Railway dashboard
-5. Railway automatically deploys the application
+1. Create a Supabase PostgreSQL database (free tier: 500MB)
+2. Push code to GitHub
+3. Connect repository to Render
+4. Set environment variables in Render dashboard:
+   - `DJANGO_SECRET_KEY`
+   - `DATABASE_URL` (from Supabase)
+   - `CLOUDINARY_URL`
+   - `DEBUG=False`
+5. Render automatically deploys the application
 
 ---
 
@@ -257,10 +242,13 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 - Django Framework documentation
 - Cloudinary for media storage
-- Railway for deployment platform
-- PostgreSQL database
+- Supabase for PostgreSQL database
+- Render for deployment platform
+- Bootstrap 5 for UI components
 - Open-source community
 
 ---
+
+**Live Demo:** [https://tweetly-adhi.onrender.com](https://tweetly-adhi.onrender.com)
 
 **If you find this project useful, please give it a star on GitHub!**
