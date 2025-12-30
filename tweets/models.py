@@ -9,7 +9,6 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True, null=True)
     
-    # IMPORTANT: CloudinaryField instead of ImageField
     image = CloudinaryField("image", default="default_jekvg4")
 
     def __str__(self):
@@ -31,7 +30,6 @@ class Tweet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tweets")
     text = models.TextField(max_length=240)
 
-    # ALSO FIX TWEET IMAGE → use Cloudinary
     photo = CloudinaryField("photo", blank=True, null=True)
 
     likes = models.ManyToManyField(User, related_name="liked_tweets", blank=True)
