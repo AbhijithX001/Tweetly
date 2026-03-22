@@ -2,14 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from cloudinary.models import CloudinaryField
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True, null=True)
     
-    image = CloudinaryField("image", default="default_jekvg4")
+    image = models.ImageField(upload_to="profile_images/", default="default.jpg")
 
     def __str__(self):
         return self.user.username
@@ -30,7 +29,7 @@ class Tweet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tweets")
     text = models.TextField(max_length=240)
 
-    photo = CloudinaryField("photo", blank=True, null=True)
+    photo = models.ImageField(upload_to="photos/", blank=True, null=True)
 
     likes = models.ManyToManyField(User, related_name="liked_tweets", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
