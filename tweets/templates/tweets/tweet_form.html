@@ -3,24 +3,26 @@
 
 {% block content %}
 
-<h4 class="mb-3">{% if tweet %}Edit Tweet{% else %}Create Tweet{% endif %}</h4>
+<h2 class="page-title">{% if tweet %}Edit Tweet{% else %}Create Tweet{% endif %}</h2>
+<p class="page-subtitle">Keep it short, sharp, and visual.</p>
 
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" class="form-shell">
     {% csrf_token %}
 
-    <textarea name="text" class="form-control mb-3" placeholder="What's happening?" required>
-{% if tweet %}{{ tweet.text }}{% endif %}
-    </textarea>
+    <label class="form-label fw-semibold">Message</label>
+    <textarea name="text" class="form-control mb-3" rows="5" maxlength="240" placeholder="What's happening?" required>{% if tweet %}{{ tweet.text }}{% endif %}</textarea>
 
-    <input type="file" name="photo" class="form-control mb-3">
+    <label class="form-label fw-semibold">Add Image (optional)</label>
+    <input type="file" name="photo" class="form-control mb-3" accept="image/png,image/jpeg">
 
     {% if tweet and tweet.photo %}
-        <img src="{{ tweet.photo.url }}" class="img-fluid rounded mb-3">
+        <img src="{{ tweet.photo.url }}" class="tweet-image" alt="Current tweet image">
     {% endif %}
 
-    <button class="btn btn-primary">
-        {% if tweet %}Update{% else %}Post{% endif %}
-    </button>
+    <div class="d-flex gap-2 mt-3">
+        <button class="btn btn-brand px-4">{% if tweet %}Update{% else %}Post{% endif %}</button>
+        <a href="{% url 'tweet_list' %}" class="btn btn-ghost px-4">Cancel</a>
+    </div>
 </form>
 
 {% endblock %}

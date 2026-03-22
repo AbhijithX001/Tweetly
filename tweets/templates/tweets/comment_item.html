@@ -1,33 +1,28 @@
-<div class="comment-card p-3 mb-3 bg-white rounded-3 shadow-sm border-start border-3">
-
+{% load static %}
+<div class="comment-card">
     <div class="d-flex align-items-center mb-2">
-        <img src="{{ comment.user.profile.image.url }}" width="34" height="34" class="rounded-circle me-2">
+        <img src="{{ comment.user.profile.image.url }}" alt="{{ comment.user.username }} avatar" width="34" height="34" class="avatar me-2" onerror="this.src='{% static 'img/default-avatar.png' %}'">
         <div>
-            <div class="fw-semibold small">{{ comment.user.username }}</div>
-            <div class="text-muted small">{{ comment.created_at }}</div>
+            <div class="user-name">{{ comment.user.username }}</div>
+            <div class="user-meta">{{ comment.created_at|timesince }} ago</div>
         </div>
     </div>
 
     <div class="mb-2">{{ comment.text }}</div>
 
     <div class="d-flex gap-3 small">
-        <a href="{% url 'comments_view' tweet.id %}?parent={{ comment.id }}" class="text-decoration-none">
-            Reply
-        </a>
+        <a href="{% url 'comments_view' tweet.id %}?parent={{ comment.id }}" class="inline-link">Reply</a>
 
         {% if request.user == comment.user %}
-            <a href="{% url 'comment_delete' comment.id %}" class="text-danger text-decoration-none">
-                Delete
-            </a>
+            <a href="{% url 'comment_delete' comment.id %}" class="text-danger">Delete</a>
         {% endif %}
     </div>
 
     {% if comment.replies.exists %}
-        <div class="ps-4 mt-3 border-start">
+        <div class="reply-block mt-3">
             {% for reply in comment.replies.all %}
                 {% include "tweets/comment_item.html" with comment=reply tweet=tweet %}
             {% endfor %}
         </div>
     {% endif %}
-
 </div>

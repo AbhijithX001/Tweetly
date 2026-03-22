@@ -14,7 +14,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     ".onrender.com",
-    "*"
+    "*",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -62,8 +62,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "tweetly_project.wsgi.application"
 
-# Database Configuration
-# Local Development & Production: Use SQLite (ensure Render has a persistent disk!)
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -88,8 +86,10 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_URL = "/images/"
-MEDIA_ROOT = BASE_DIR / "images"
+# Serve user-uploaded media from project root so existing `photos/` and
+# `profile_images/` directories resolve correctly in production.
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

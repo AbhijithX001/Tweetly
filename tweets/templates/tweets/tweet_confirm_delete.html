@@ -3,20 +3,20 @@
 
 {% block content %}
 
-<h4 class="mb-3">Delete this tweet?</h4>
+<h2 class="page-title">Delete Tweet</h2>
+<p class="page-subtitle">This action cannot be undone.</p>
 
-<div class="p-3 bg-white rounded-3 border mb-3">
-    <p>{{ tweet.text }}</p>
-
+<div class="form-shell mb-3">
+    <p class="tweet-copy">{{ tweet.text }}</p>
     {% if tweet.photo %}
-        <img src="{{ tweet.photo.url }}" class="img-fluid rounded-3 mt-2">
+        <img src="{{ tweet.photo.url }}" class="tweet-image" alt="Tweet image to delete">
     {% endif %}
 </div>
 
-<form method="POST">
+<form method="POST" class="d-flex gap-2">
     {% csrf_token %}
     <button class="btn btn-danger">Confirm Delete</button>
-    <a href="{% url 'tweet_list' %}" class="btn btn-secondary ms-2">Cancel</a>
+    <a href="{% url 'tweet_list' %}" class="btn btn-ghost">Cancel</a>
 </form>
 
 {% endblock %}

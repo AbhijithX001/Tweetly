@@ -1,21 +1,21 @@
 {% extends "layout.html" %}
 
+{% block title %}Register{% endblock %}
 {% block content %}
 
-<div class="card shadow-sm p-4 mx-auto" style="max-width: 450px;">
-    <h4 class="mb-3">Register</h4>
+<div class="auth-wrap">
+    <div class="form-shell">
+        <h2 class="page-title">Create Account</h2>
+        <p class="page-subtitle">Join Tweetly and start sharing.</p>
 
-    <form method="post">
-        {% csrf_token %}
+        <form method="post">
+            {% csrf_token %}
+            <input name="username" class="form-control mb-2" placeholder="Username" required>
+            <input name="password" type="password" class="form-control mb-2" placeholder="Password" required>
+            <button class="btn btn-brand w-100 mt-2">Create Account</button>
+        </form>
 
-        <input name="username" class="form-control mb-2" placeholder="Username" required>
-        <input name="password" type="password" class="form-control mb-2" placeholder="Password" required>
-
-        <button class="btn btn-primary w-100 mt-2">Create Account</button>
-    </form>
-
-    <div class="text-center mt-3">
-        <a href="/accounts/login/">Already have an account?</a>
+        <p class="text-center mt-3 mb-0">Already have an account? <a class="inline-link" href="/accounts/login/">Login</a></p>
     </div>
 </div>
 

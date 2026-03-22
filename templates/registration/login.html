@@ -1,19 +1,20 @@
 {% extends "layout.html" %}
 
+{% block title %}Login{% endblock %}
 {% block content %}
 
-<div class="card shadow-sm p-4 mx-auto" style="max-width: 450px;">
-    <h4 class="mb-3">Login</h4>
+<div class="auth-wrap">
+    <div class="form-shell">
+        <h2 class="page-title">Welcome Back</h2>
+        <p class="page-subtitle">Log in to continue your feed.</p>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-brand w-100 mt-2">Login</button>
+        </form>
 
-        <button class="btn btn-primary w-100 mt-2">Login</button>
-    </form>
-
-    <div class="text-center mt-3">
-        <a href="/tweets/register/">Create an account</a>
+        <p class="text-center mt-3 mb-0">New here? <a class="inline-link" href="/tweets/register/">Create an account</a></p>
     </div>
 </div>
 
